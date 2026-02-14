@@ -4,7 +4,7 @@ WordleBench is a benchmark for evaluating LLMs on their ability to solve Wordle 
 
 ## Results
 
-url goes here
+[https://www.wordlebench.com/](https://www.wordlebench.com/)
 
 ## Running the Benchmark
 
