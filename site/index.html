@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordleBench - Model Benchmark</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #6aaa64;
+            --secondary-color: #c9b458;
+            --accent-color: #787c7e;
+            --bg-color: #f7f7f7;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #fff !important;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            height: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .chart-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+        }
+
+        .table-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .badge-rank {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .rank-1 { background-color: #ffd700; color: #000; }
+        .rank-2 { background-color: #c0c0c0; color: #000; }
+        .rank-3 { background-color: #cd7f32; color: #fff; }
+        .rank-other { background-color: #e9ecef; color: #495057; }
+
+        .progress-bar-custom {
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border-radius: 4px;
+        }
+
+        .model-name {
+            font-weight: 600;
+            color: #212529;
+        }
+
+        .provider-badge {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            background-color: #e9ecef;
+            color: #6c757d;
+            margin-left: 0.5rem;
+        }
+
+        footer {
+            background-color: #1a1a2e;
+            color: rgba(255,255,255,0.7);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <span class="navbar-brand">🟩🟨⬜️⬜️🟩</span>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">Wordle Bench</h1>
+            <p class="hero-subtitle">Evaluating LLMs on their Wordle-solving capabilities</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Data Table -->
+        <div class="table-container mb-4">
+            <h4 class="mb-4">Leaderboard</h4>
+            <div class="table-responsive">
+                <table class="table table-hover" id="leaderboard">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Model</th>
+                            <th>Provider</th>
+                            <th>Success Rate</th>
+                            <th>Avg Guesses</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td><span class="badge-rank rank-1">1</span></td>
+                            <td><span class="model-name">gemini-3-pro-preview</span></td>
+                            <td><span class="provider-badge">google</span></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1" style="height: 8px; max-width: 100px;">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 95%"></div>
+                                    </div>
+                                    <span class="ms-2">95%</span>
+                                </div>
+                            </td>
+                            <td>3.62</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-rank rank-2">2</span></td>
+                            <td><span class="model-name">gpt-5-mini</span></td>
+                            <td><span class="provider-badge">openai</span></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1" style="height: 8px; max-width: 100px;">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 94%"></div>
+                                    </div>
+                                    <span class="ms-2">94%</span>
+                                </div>
+                            </td>
+                            <td>3.51</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-rank rank-3">3</span></td>
+                            <td><span class="model-name">claude-opus-4.6</span></td>
+                            <td><span class="provider-badge">anthropic</span></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1" style="height: 8px; max-width: 100px;">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 93%"></div>
+                                    </div>
+                                    <span class="ms-2">93%</span>
+                                </div>
+                            </td>
+                            <td>3.61</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-rank rank-other">4</span></td>
+                            <td><span class="model-name">gpt-5.2</span></td>
+                            <td><span class="provider-badge">openai</span></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1" style="height: 8px; max-width: 100px;">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 92%"></div>
+                                    </div>
+                                    <span class="ms-2">92%</span>
+                                </div>
+                            </td>
+                            <td>3.55</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-rank rank-other">5</span></td>
+                            <td><span class="model-name">kimi-k2.5</span></td>
+                            <td><span class="provider-badge">moonshotai</span></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1" style="height: 8px; max-width: 100px;">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 86%"></div>
+                                    </div>
+                                    <span class="ms-2">86%</span>
+                                </div>
+                            </td>
+                            <td>3.74</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-rank rank-other">6</span></td>
+                            <td><span class="model-name">gpt-5-nano</span></td>
+                            <td><span class="provider-badge">openai</span></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1" style="height: 8px; max-width: 100px;">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 85%"></div>
+                                    </div>
+                                    <span class="ms-2">85%</span>
+                                </div>
+                            </td>
+                            <td>3.64</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-rank rank-other">7</span></td>
+                            <td><span class="model-name">gemini-3-flash-preview</span></td>
+                            <td><span class="provider-badge">google</span></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1" style="height: 8px; max-width: 100px;">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 81%"></div>
+                                    </div>
+                                    <span class="ms-2">81%</span>
+                                </div>
+                            </td>
+                            <td>3.88</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-rank rank-other">8</span></td>
+                            <td><span class="model-name">glm-5</span></td>
+                            <td><span class="provider-badge">z-ai</span></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1" style="height: 8px; max-width: 100px;">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 74%"></div>
+                                    </div>
+                                    <span class="ms-2">74%</span>
+                                </div>
+                            </td>
+                            <td>3.57</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-rank rank-other">9</span></td>
+                            <td><span class="model-name">claude-sonnet-4.5</span></td>
+                            <td><span class="provider-badge">anthropic</span></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1" style="height: 8px; max-width: 100px;">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 72%"></div>
+                                    </div>
+                                    <span class="ms-2">72%</span>
+                                </div>
+                            </td>
+                            <td>3.72</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-rank rank-other">10</span></td>
+                            <td><span class="model-name">gpt-oss-120b</span></td>
+                            <td><span class="provider-badge">openai</span></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1" style="height: 8px; max-width: 100px;">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 62%"></div>
+                                    </div>
+                                    <span class="ms-2">62%</span>
+                                </div>
+                            </td>
+                            <td>3.90</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-rank rank-other">11</span></td>
+                            <td><span class="model-name">gpt-oss-20b</span></td>
+                            <td><span class="provider-badge">openai</span></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1" style="height: 8px; max-width: 100px;">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 59%"></div>
+                                    </div>
+                                    <span class="ms-2">59%</span>
+                                </div>
+                            </td>
+                            <td>3.78</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-rank rank-other">12</span></td>
+                            <td><span class="model-name">claude-haiku-4.5</span></td>
+                            <td><span class="provider-badge">anthropic</span></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1" style="height: 8px; max-width: 100px;">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 46%"></div>
+                                    </div>
+                                    <span class="ms-2">46%</span>
+                                </div>
+                            </td>
+                            <td>4.02</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="container text-center">
+            <p>&copy; 2026 WordleBench. Benchmarking LLMs on Wordle.</p>
+        </div>
+    </footer>
+
+
+</body>
+</html>
