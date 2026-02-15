@@ -125,3 +125,90 @@ def get_game(game_id: int) -> Game | None:
         messages=json.loads(row[6]),
         cost=row[7],
     )
+
+
+def list_games(
+    page: int = 1,
+    per_page: int = 100,
+    sort_by: str = "id",
+    sort_order: str = "asc",
+    model: str | None = None,
+    word: str | None = None,
+    solved: bool | None = None,
+    error: bool | None = None,
+) -> tuple[list[dict], int]:
+    """List games with pagination, sorting, and filtering.
+
+    Returns a tuple of (games_list, total_count).
+    """
+    valid_columns = {"id", "model", "word", "guesses", "solved", "error", "cost"}
+    if sort_by not in valid_columns:
+        sort_by = "id"
+    if sort_order.lower() not in ("asc", "desc"):
+        sort_order = "asc"
+
+    conn = _get_connection()
+
+    # Build WHERE clause for filtering
+    where_clauses = []
+    params = []
+    if model:
+        where_clauses.append("model = ?")
+        params.append(model)
+    if word:
+        where_clauses.append("word = ?")
+        params.append(word)
+    if solved is not None:
+        where_clauses.append("solved = ?")
+        params.append(solved)
+    if error is not None:
+        where_clauses.append("error = ?")
+        params.append(error)
+
+    where_sql = ""
+    if where_clauses:
+        where_sql = "WHERE " + " AND ".join(where_clauses)
+
+    # Get total count
+    count_sql = f"SELECT COUNT(*) FROM games {where_sql}"
+    cursor = conn.execute(count_sql, params)
+    total_count = cursor.fetchone()[0]
+
+    # Get paginated games
+    offset = (page - 1) * per_page
+    games_sql = f"""
+        SELECT id, model, word, guesses, solved, error, cost
+        FROM games
+        {where_sql}
+        ORDER BY {sort_by} {sort_order.upper()}
+        LIMIT ? OFFSET ?
+    """
+    cursor = conn.execute(games_sql, params + [per_page, offset])
+
+    games = [
+        {
+            "id": row[0],
+            "model": row[1],
+            "word": row[2],
+            "guesses": row[3],
+            "solved": bool(row[4]),
+            "error": bool(row[5]),
+            "cost": row[6],
+        }
+        for row in cursor.fetchall()
+    ]
+
+    return games, total_count
+
+
+def get_filter_options() -> dict:
+    """Get unique values for filter dropdowns."""
+    conn = _get_connection()
+
+    cursor = conn.execute("SELECT DISTINCT model FROM games ORDER BY model")
+    models = [row[0] for row in cursor.fetchall()]
+
+    cursor = conn.execute("SELECT DISTINCT word FROM games ORDER BY word")
+    words = [row[0] for row in cursor.fetchall()]
+
+    return {"models": models, "words": words}

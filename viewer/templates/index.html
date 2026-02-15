@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordleBench Viewer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .sort-icon::after {
+            content: ' ↕';
+            font-size: 0.8em;
+            opacity: 0.5;
+        }
+        .sort-asc::after {
+            content: ' ↑';
+            opacity: 1;
+        }
+        .sort-desc::after {
+            content: ' ↓';
+            opacity: 1;
+        }
+        .table th {
+            white-space: nowrap;
+        }
+        .table td {
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">WordleBench Viewer</h1>
+        
+        <!-- Filters -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Filters</h5>
+                <form method="get" action="/" class="row g-3">
+                    <!-- Preserve sort parameters -->
+                    <input type="hidden" name="sort_by" value="{{ sort_by }}">
+                    <input type="hidden" name="sort_order" value="{{ sort_order }}">
+                    
+                    <div class="col-md-3">
+                        <label for="model" class="form-label">Model</label>
+                        <select class="form-select" id="model" name="model">
+                            <option value="">All Models</option>
+                            {% for m in models %}
+                            <option value="{{ m }}" {% if model == m %}selected{% endif %}>{{ m }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="word" class="form-label">Word</label>
+                        <select class="form-select" id="word" name="word">
+                            <option value="">All Words</option>
+                            {% for w in words %}
+                            <option value="{{ w }}" {% if word == w %}selected{% endif %}>{{ w }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="solved" class="form-label">Solved</label>
+                        <select class="form-select" id="solved" name="solved">
+                            <option value="">All</option>
+                            <option value="true" {% if solved == True %}selected{% endif %}>Yes</option>
+                            <option value="false" {% if solved == False %}selected{% endif %}>No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label for="error" class="form-label">Error</label>
+                        <select class="form-select" id="error" name="error">
+                            <option value="">All</option>
+                            <option value="true" {% if error == True %}selected{% endif %}>Yes</option>
+                            <option value="false" {% if error == False %}selected{% endif %}>No</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Apply Filters</button>
+                        <a href="/" class="btn btn-secondary">Clear Filters</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Results info -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <p class="mb-0">Showing {{ games|length }} of {{ total_count }} games</p>
+            <p class="mb-0">Page {{ page }} of {{ total_pages }}</p>
+        </div>
+        
+        <!-- Games Table -->
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>
+                            <a href="/?page={{ page }}&sort_by=id&sort_order={% if sort_by == 'id' and sort_order == 'asc' %}desc{% else %}asc{% endif %}{% if model %}&model={{ model }}{% endif %}{% if word %}&word={{ word }}{% endif %}{% if solved is not none %}&solved={{ solved }}{% endif %}{% if error is not none %}&error={{ error }}{% endif %}" 
+                               class="text-white text-decoration-none sort-icon{% if sort_by == 'id' %} sort-{{ sort_order }}{% endif %}">
+                                ID
+                            </a>
+                        </th>
+                        <th>
+                            <a href="/?page={{ page }}&sort_by=model&sort_order={% if sort_by == 'model' and sort_order == 'asc' %}desc{% else %}asc{% endif %}{% if model %}&model={{ model }}{% endif %}{% if word %}&word={{ word }}{% endif %}{% if solved is not none %}&solved={{ solved }}{% endif %}{% if error is not none %}&error={{ error }}{% endif %}" 
+                               class="text-white text-decoration-none sort-icon{% if sort_by == 'model' %} sort-{{ sort_order }}{% endif %}">
+                                Model
+                            </a>
+                        </th>
+                        <th>
+                            <a href="/?page={{ page }}&sort_by=word&sort_order={% if sort_by == 'word' and sort_order == 'asc' %}desc{% else %}asc{% endif %}{% if model %}&model={{ model }}{% endif %}{% if word %}&word={{ word }}{% endif %}{% if solved is not none %}&solved={{ solved }}{% endif %}{% if error is not none %}&error={{ error }}{% endif %}" 
+                               class="text-white text-decoration-none sort-icon{% if sort_by == 'word' %} sort-{{ sort_order }}{% endif %}">
+                                Word
+                            </a>
+                        </th>
+                        <th>
+                            <a href="/?page={{ page }}&sort_by=guesses&sort_order={% if sort_by == 'guesses' and sort_order == 'asc' %}desc{% else %}asc{% endif %}{% if model %}&model={{ model }}{% endif %}{% if word %}&word={{ word }}{% endif %}{% if solved is not none %}&solved={{ solved }}{% endif %}{% if error is not none %}&error={{ error }}{% endif %}" 
+                               class="text-white text-decoration-none sort-icon{% if sort_by == 'guesses' %} sort-{{ sort_order }}{% endif %}">
+                                Guesses
+                            </a>
+                        </th>
+                        <th>
+                            <a href="/?page={{ page }}&sort_by=solved&sort_order={% if sort_by == 'solved' and sort_order == 'asc' %}desc{% else %}asc{% endif %}{% if model %}&model={{ model }}{% endif %}{% if word %}&word={{ word }}{% endif %}{% if solved is not none %}&solved={{ solved }}{% endif %}{% if error is not none %}&error={{ error }}{% endif %}" 
+                               class="text-white text-decoration-none sort-icon{% if sort_by == 'solved' %} sort-{{ sort_order }}{% endif %}">
+                                Solved
+                            </a>
+                        </th>
+                        <th>
+                            <a href="/?page={{ page }}&sort_by=error&sort_order={% if sort_by == 'error' and sort_order == 'asc' %}desc{% else %}asc{% endif %}{% if model %}&model={{ model }}{% endif %}{% if word %}&word={{ word }}{% endif %}{% if solved is not none %}&solved={{ solved }}{% endif %}{% if error is not none %}&error={{ error }}{% endif %}" 
+                               class="text-white text-decoration-none sort-icon{% if sort_by == 'error' %} sort-{{ sort_order }}{% endif %}">
+                                Error
+                            </a>
+                        </th>
+                        <th>
+                            <a href="/?page={{ page }}&sort_by=cost&sort_order={% if sort_by == 'cost' and sort_order == 'asc' %}desc{% else %}asc{% endif %}{% if model %}&model={{ model }}{% endif %}{% if word %}&word={{ word }}{% endif %}{% if solved is not none %}&solved={{ solved }}{% endif %}{% if error is not none %}&error={{ error }}{% endif %}" 
+                               class="text-white text-decoration-none sort-icon{% if sort_by == 'cost' %} sort-{{ sort_order }}{% endif %}">
+                                Cost
+                            </a>
+                        </th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for game in games %}
+                    <tr>
+                        <td>{{ game.id }}</td>
+                        <td>{{ game.model }}</td>
+                        <td>{{ game.word }}</td>
+                        <td>{{ game.guesses }}</td>
+                        <td>
+                            {% if game.solved %}
+                            <span class="badge bg-success">Yes</span>
+                            {% else %}
+                            <span class="badge bg-secondary">No</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if game.error %}
+                            <span class="badge bg-danger">Yes</span>
+                            {% else %}
+                            <span class="badge bg-secondary">No</span>
+                            {% endif %}
+                        </td>
+                        <td>${{ "%.4f"|format(game.cost) }}</td>
+                        <td>
+                            <a href="/{{ game.id }}" class="btn btn-sm btn-primary">View</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        {% if total_pages > 1 %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <!-- Previous -->
+                <li class="page-item {% if not has_prev %}disabled{% endif %}">
+                    <a class="page-link" href="/?page={{ page - 1 }}&sort_by={{ sort_by }}&sort_order={{ sort_order }}{% if model %}&model={{ model }}{% endif %}{% if word %}&word={{ word }}{% endif %}{% if solved is not none %}&solved={{ solved }}{% endif %}{% if error is not none %}&error={{ error }}{% endif %}" 
+                       {% if not has_prev %}tabindex="-1" aria-disabled="true"{% endif %}>
+                        Previous
+                    </a>
+                </li>
+                
+                <!-- Page numbers -->
+                {% set start_page = [page - 2, 1]|max %}
+                {% set end_page = [start_page + 4, total_pages]|min %}
+                {% set start_page = [end_page - 4, 1]|max %}
+                
+                {% if start_page > 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="/?page=1&sort_by={{ sort_by }}&sort_order={{ sort_order }}{% if model %}&model={{ model }}{% endif %}{% if word %}&word={{ word }}{% endif %}{% if solved is not none %}&solved={{ solved }}{% endif %}{% if error is not none %}&error={{ error }}{% endif %}">1</a>
+                </li>
+                {% if start_page > 2 %}
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+                {% endif %}
+                {% endif %}
+                
+                {% for p in range(start_page, end_page + 1) %}
+                <li class="page-item {% if p == page %}active{% endif %}">
+                    <a class="page-link" href="/?page={{ p }}&sort_by={{ sort_by }}&sort_order={{ sort_order }}{% if model %}&model={{ model }}{% endif %}{% if word %}&word={{ word }}{% endif %}{% if solved is not none %}&solved={{ solved }}{% endif %}{% if error is not none %}&error={{ error }}{% endif %}">{{ p }}</a>
+                </li>
+                {% endfor %}
+                
+                {% if end_page < total_pages %}
+                {% if end_page < total_pages - 1 %}
+                <li class="page-item disabled"><span class="page-link">...</span></li>
+                {% endif %}
+                <li class="page-item">
+                    <a class="page-link" href="/?page={{ total_pages }}&sort_by={{ sort_by }}&sort_order={{ sort_order }}{% if model %}&model={{ model }}{% endif %}{% if word %}&word={{ word }}{% endif %}{% if solved is not none %}&solved={{ solved }}{% endif %}{% if error is not none %}&error={{ error }}{% endif %}">{{ total_pages }}</a>
+                </li>
+                {% endif %}
+                
+                <!-- Next -->
+                <li class="page-item {% if not has_next %}disabled{% endif %}">
+                    <a class="page-link" href="/?page={{ page + 1 }}&sort_by={{ sort_by }}&sort_order={{ sort_order }}{% if model %}&model={{ model }}{% endif %}{% if word %}&word={{ word }}{% endif %}{% if solved is not none %}&solved={{ solved }}{% endif %}{% if error is not none %}&error={{ error }}{% endif %}" 
+                       {% if not has_next %}tabindex="-1" aria-disabled="true"{% endif %}>
+                        Next
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
