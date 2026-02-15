@@ -8,7 +8,8 @@ query = """
 SELECT
     model,
     COUNT(CASE WHEN solved = TRUE AND guesses < 6 THEN 1 END) as successful_games,
-    AVG(CASE WHEN solved = TRUE AND guesses < 6 THEN guesses END) as guesses_per_game_avg
+    AVG(CASE WHEN solved = TRUE AND guesses < 6 THEN guesses END) as guesses_per_game_avg,
+    AVG(cost) as avg_cost_per_game
 FROM games
 GROUP BY model
 ORDER BY 2 DESC
@@ -25,6 +26,7 @@ for row in result:
             "model": row[0],
             "successful_games": row[1],
             "guesses_per_game_avg": round(row[2], 2) if row[2] is not None else None,
+            "avg_cost_per_game": round(row[3], 2) if row[3] is not None else None,
         }
     )
 

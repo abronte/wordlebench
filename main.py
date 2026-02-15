@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 from models import Game
-from db import check_game, add_game
+from db import check_game, add_game, init_db
 
 # Load environment variables from .env file
 load_dotenv()
@@ -86,6 +86,7 @@ def play_wordle(word: str, model: str) -> Game:
             print(f"({model} {word}) LLM failed to provide a guess. Ending game.")
             game.error = True
             game.guesses = -1
+            game.messages = messages
             return game
 
         result = evaluate_guess(guess, word)
@@ -116,6 +117,8 @@ def play_wordle(word: str, model: str) -> Game:
 
 # main execution
 if __name__ == "__main__":
+    init_db()
+
     words = get_words()
     models = [
         "openai/gpt-5.2",
@@ -134,9 +137,7 @@ if __name__ == "__main__":
         "z-ai/glm-5",
         "z-ai/glm-4.7-flash",
         "z-ai/glm-4.7",
-        "deepseek/deepseek-v3.2",
         "mistralai/mistral-large-2512",
-        "mistralai/ministral-14b-2512",
     ]
 
     # Create all (word, model) pairs to process, filtering out existing games
