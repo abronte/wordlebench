@@ -61,4 +61,23 @@ with open("failed_words.json", "w") as f:
 
 print(f"Wrote {len(hardest_words)} records to failed_words.json")
 
+# Query for top error models
+query3 = """
+SELECT model FROM games where error = true group by 1 order by  COUNT(CASE WHEN error = true THEN 1 END) desc limit 10;
+"""
+
+cursor.execute(query3)
+result3 = cursor.fetchall()
+
+# Convert to list of dictionaries
+top_error_models = []
+for row in result3:
+    top_error_models.append({"model": row[0]})
+
+# Write to JSON file
+with open("top_error_models.json", "w") as f:
+    json.dump(top_error_models, f, indent=2)
+
+print(f"Wrote {len(top_error_models)} records to top_error_models.json")
+
 conn.close()

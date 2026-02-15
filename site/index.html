@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WordleBench - Model Benchmark</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🟩</text></svg>">
 
     <style>
@@ -125,6 +126,14 @@
         .rank-3 { background-color: #cd7f32; color: #fff; }
         .rank-other { background-color: #e9ecef; color: #495057; }
 
+        /* Side tables use gray for all ranks */
+        .side-table .rank-1,
+        .side-table .rank-2,
+        .side-table .rank-3 {
+            background-color: #e9ecef;
+            color: #495057;
+        }
+
         .progress-bar-custom {
             background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
             border-radius: 4px;
@@ -184,12 +193,27 @@
                             <th>Provider</th>
                             <th>Success Rate</th>
                             <th>Avg Guesses</th>
-                            <th>Avg Cost</th>
+                            <th>Avg Cost <i class="bi bi-question-circle" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Average input + output cost for an entire game of wordle." style="cursor: help; font-size: 0.7em; vertical-align: middle;"></i></th>
                         </tr>
                     </thead>
                     <tbody id="tableBody">
                         <tr>
                             <td><span class="badge-rank rank-1">1</span></td>
+                            <td><span class="model-name">gpt-5</span></td>
+                            <td><span class="provider-badge">openai</span></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1" style="height: 8px; max-width: 100px;">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 97%"></div>
+                                    </div>
+                                    <span class="ms-2">97%</span>
+                                </div>
+                            </td>
+                            <td>3.6</td>
+                            <td>$0.12</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-rank rank-2">2</span></td>
                             <td><span class="model-name">gemini-3-pro-preview</span></td>
                             <td><span class="provider-badge">google</span></td>
                             <td>
@@ -204,7 +228,7 @@
                             <td>$0.14</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-2">2</span></td>
+                            <td><span class="badge-rank rank-3">3</span></td>
                             <td><span class="model-name">gpt-5-mini</span></td>
                             <td><span class="provider-badge">openai</span></td>
                             <td>
@@ -219,7 +243,7 @@
                             <td>$0.01</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-3">3</span></td>
+                            <td><span class="badge-rank rank-other">4</span></td>
                             <td><span class="model-name">claude-opus-4.6</span></td>
                             <td><span class="provider-badge">anthropic</span></td>
                             <td>
@@ -234,7 +258,7 @@
                             <td>$0.06</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-other">4</span></td>
+                            <td><span class="badge-rank rank-other">5</span></td>
                             <td><span class="model-name">gpt-5.2</span></td>
                             <td><span class="provider-badge">openai</span></td>
                             <td>
@@ -249,7 +273,7 @@
                             <td>$0.03</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-other">5</span></td>
+                            <td><span class="badge-rank rank-other">6</span></td>
                             <td><span class="model-name">gemini-2.5-pro</span></td>
                             <td><span class="provider-badge">google</span></td>
                             <td>
@@ -264,7 +288,7 @@
                             <td>$0.14</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-other">6</span></td>
+                            <td><span class="badge-rank rank-other">7</span></td>
                             <td><span class="model-name">kimi-k2.5</span></td>
                             <td><span class="provider-badge">moonshotai</span></td>
                             <td>
@@ -279,7 +303,7 @@
                             <td>$0.07</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-other">7</span></td>
+                            <td><span class="badge-rank rank-other">8</span></td>
                             <td><span class="model-name">gpt-5-nano</span></td>
                             <td><span class="provider-badge">openai</span></td>
                             <td>
@@ -294,7 +318,22 @@
                             <td>$0.01</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-other">8</span></td>
+                            <td><span class="badge-rank rank-other">9</span></td>
+                            <td><span class="model-name">qwen3-next-80b-a3b-thinking</span></td>
+                            <td><span class="provider-badge">qwen</span></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1" style="height: 8px; max-width: 100px;">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 85%"></div>
+                                    </div>
+                                    <span class="ms-2">85%</span>
+                                </div>
+                            </td>
+                            <td>3.8</td>
+                            <td>$0.04</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-rank rank-other">10</span></td>
                             <td><span class="model-name">gemini-3-flash-preview</span></td>
                             <td><span class="provider-badge">google</span></td>
                             <td>
@@ -309,7 +348,7 @@
                             <td>$0.01</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-other">9</span></td>
+                            <td><span class="badge-rank rank-other">11</span></td>
                             <td><span class="model-name">glm-5</span></td>
                             <td><span class="provider-badge">z-ai</span></td>
                             <td>
@@ -324,7 +363,7 @@
                             <td>$0.05</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-other">10</span></td>
+                            <td><span class="badge-rank rank-other">12</span></td>
                             <td><span class="model-name">claude-sonnet-4.5</span></td>
                             <td><span class="provider-badge">anthropic</span></td>
                             <td>
@@ -339,7 +378,7 @@
                             <td>$0.05</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-other">11</span></td>
+                            <td><span class="badge-rank rank-other">13</span></td>
                             <td><span class="model-name">gpt-oss-120b</span></td>
                             <td><span class="provider-badge">openai</span></td>
                             <td>
@@ -354,7 +393,7 @@
                             <td>$0.00</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-other">12</span></td>
+                            <td><span class="badge-rank rank-other">14</span></td>
                             <td><span class="model-name">gpt-oss-20b</span></td>
                             <td><span class="provider-badge">openai</span></td>
                             <td>
@@ -369,7 +408,7 @@
                             <td>$0.00</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-other">13</span></td>
+                            <td><span class="badge-rank rank-other">15</span></td>
                             <td><span class="model-name">claude-haiku-4.5</span></td>
                             <td><span class="provider-badge">anthropic</span></td>
                             <td>
@@ -384,7 +423,7 @@
                             <td>$0.07</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-other">14</span></td>
+                            <td><span class="badge-rank rank-other">16</span></td>
                             <td><span class="model-name">glm-4.7</span></td>
                             <td><span class="provider-badge">z-ai</span></td>
                             <td>
@@ -399,7 +438,7 @@
                             <td>$0.06</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-other">15</span></td>
+                            <td><span class="badge-rank rank-other">17</span></td>
                             <td><span class="model-name">glm-4.7-flash</span></td>
                             <td><span class="provider-badge">z-ai</span></td>
                             <td>
@@ -414,7 +453,7 @@
                             <td>$0.01</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-other">16</span></td>
+                            <td><span class="badge-rank rank-other">18</span></td>
                             <td><span class="model-name">mistral-large-2512</span></td>
                             <td><span class="provider-badge">mistralai</span></td>
                             <td>
@@ -429,7 +468,22 @@
                             <td>$0.01</td>
                         </tr>
                         <tr>
-                            <td><span class="badge-rank rank-other">17</span></td>
+                            <td><span class="badge-rank rank-other">19</span></td>
+                            <td><span class="model-name">qwen3-max-thinking</span></td>
+                            <td><span class="provider-badge">qwen</span></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1" style="height: 8px; max-width: 100px;">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: 7%"></div>
+                                    </div>
+                                    <span class="ms-2">7%</span>
+                                </div>
+                            </td>
+                            <td>4.14</td>
+                            <td>$0.10</td>
+                        </tr>
+                        <tr>
+                            <td><span class="badge-rank rank-other">20</span></td>
                             <td><span class="model-name">gemini-2.5-flash</span></td>
                             <td><span class="provider-badge">google</span></td>
                             <td>
@@ -448,60 +502,124 @@
             </div>
         </div>
 
-        <!-- Failed Words Table -->
-        <div class="table-container mb-4">
-            <h4 class="mb-4">Hardest words to solve</h4>
-            <div class="table-responsive">
-                <table class="table table-hover" id="failedWordsTable">
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Word</th>
-                        </tr>
-                    </thead>
-                    <tbody id="failedWordsBody">
-                        <tr>
-                            <td><span class="badge-rank rank-1">1</span></td>
-                            <td><span class="model-name">WAFER</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge-rank rank-2">2</span></td>
-                            <td><span class="model-name">PIPER</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge-rank rank-3">3</span></td>
-                            <td><span class="model-name">BOOZY</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge-rank rank-other">4</span></td>
-                            <td><span class="model-name">EXPEL</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge-rank rank-other">5</span></td>
-                            <td><span class="model-name">EAGER</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge-rank rank-other">6</span></td>
-                            <td><span class="model-name">VENOM</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge-rank rank-other">7</span></td>
-                            <td><span class="model-name">MUMMY</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge-rank rank-other">8</span></td>
-                            <td><span class="model-name">EGRET</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge-rank rank-other">9</span></td>
-                            <td><span class="model-name">EAGLE</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="badge-rank rank-other">10</span></td>
-                            <td><span class="model-name">CATCH</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- Side by Side Tables -->
+        <div class="row">
+            <!-- Failed Words Table -->
+            <div class="col-md-6">
+                <div class="table-container mb-4">
+                    <h4 class="mb-4">Hardest words to solve</h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover side-table" id="failedWordsTable">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Word</th>
+                                </tr>
+                            </thead>
+                            <tbody id="failedWordsBody">
+                                <tr>
+                                    <td><span class="badge-rank rank-1">1</span></td>
+                                    <td><span class="model-name">WAFER</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-2">2</span></td>
+                                    <td><span class="model-name">PIPER</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-3">3</span></td>
+                                    <td><span class="model-name">BOOZY</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-other">4</span></td>
+                                    <td><span class="model-name">EXPEL</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-other">5</span></td>
+                                    <td><span class="model-name">EAGER</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-other">6</span></td>
+                                    <td><span class="model-name">MUMMY</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-other">7</span></td>
+                                    <td><span class="model-name">EGRET</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-other">8</span></td>
+                                    <td><span class="model-name">WHIRL</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-other">9</span></td>
+                                    <td><span class="model-name">VENOM</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-other">10</span></td>
+                                    <td><span class="model-name">FIFTY</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Models Table -->
+            <div class="col-md-6">
+                <div class="table-container mb-4">
+                    <h4 class="mb-4">Models with most errors <i class="bi bi-question-circle" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-content="Top 10 models by number of completions that did not follow instructions." style="cursor: help; font-size: 0.7em; vertical-align: baseline;"></i></h4>
+                    <div class="table-responsive">
+                        <table class="table table-hover side-table" id="errorModelsTable">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Model</th>
+                                </tr>
+                            </thead>
+                            <tbody id="errorModelsBody">
+                                <tr>
+                                    <td><span class="badge-rank rank-1">1</span></td>
+                                    <td><span class="model-name">glm-4.7-flash</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-2">2</span></td>
+                                    <td><span class="model-name">glm-4.7</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-3">3</span></td>
+                                    <td><span class="model-name">gpt-oss-120b</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-other">4</span></td>
+                                    <td><span class="model-name">gpt-oss-20b</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-other">5</span></td>
+                                    <td><span class="model-name">glm-5</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-other">6</span></td>
+                                    <td><span class="model-name">claude-haiku-4.5</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-other">7</span></td>
+                                    <td><span class="model-name">kimi-k2.5</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-other">8</span></td>
+                                    <td><span class="model-name">gemini-3-pro-preview</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-other">9</span></td>
+                                    <td><span class="model-name">claude-sonnet-4.5</span></td>
+                                </tr>
+                                <tr>
+                                    <td><span class="badge-rank rank-other">10</span></td>
+                                    <td><span class="model-name">gemini-2.5-flash</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -513,6 +631,13 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
+            var popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl));
+        });
+    </script>
 
 </body>
 </html>

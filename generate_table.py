@@ -70,10 +70,33 @@ def generate_failed_words_table(failed_words):
 
         rank_class = get_rank_class(rank)
 
-        row = f"""                        <tr>
-                            <td><span class="badge-rank {rank_class}">{rank}</span></td>
-                            <td><span class="model-name">{word}</span></td>
-                        </tr>"""
+        row = f"""                                <tr>
+                                    <td><span class="badge-rank {rank_class}">{rank}</span></td>
+                                    <td><span class="model-name">{word}</span></td>
+                                </tr>"""
+        rows.append(row)
+
+    return "\n".join(rows)
+
+
+def generate_error_models_table(error_models):
+    """Generate the error models table body."""
+    rows = []
+
+    for i, model_data in enumerate(error_models):
+        rank = i + 1
+        model = model_data.get("model", "")
+
+        # Split model name to get provider if available
+        model_parts = model.split("/")
+        model_name = model_parts[1] if len(model_parts) > 1 else model
+
+        rank_class = get_rank_class(rank)
+
+        row = f"""                                <tr>
+                                    <td><span class="badge-rank {rank_class}">{rank}</span></td>
+                                    <td><span class="model-name">{model_name}</span></td>
+                                </tr>"""
         rows.append(row)
 
     return "\n".join(rows)
@@ -91,12 +114,19 @@ def replace_table_content(content, start_marker, end_marker, new_body):
         print(f"Error: Could not find {end_marker} in index.html")
         return None
 
+    # Find the indentation of the end_marker by looking backwards from end_idx
+    indent_start = end_idx
+    while indent_start > 0 and content[indent_start - 1] in " \t":
+        indent_start -= 1
+    indentation = content[indent_start:end_idx]
+
     # Replace the content between the markers
     return (
         content[: start_idx + len(start_marker)]
         + "\n"
         + new_body
-        + "\n                    "
+        + "\n"
+        + indentation
         + content[end_idx:]
     )
 
@@ -112,9 +142,18 @@ def main():
     with open(failed_words_path, "r") as f:
         failed_words = json.load(f)
 
+    # Read top_error_models.json
+    error_models_path = Path("top_error_models.json")
+    if error_models_path.exists():
+        with open(error_models_path, "r") as f:
+            error_models = json.load(f)
+    else:
+        error_models = []
+
     # Generate table body HTML
     table_body = generate_table_body(results)
     failed_words_body = generate_failed_words_table(failed_words)
+    error_models_body = generate_error_models_table(error_models)
 
     # Read index.html
     index_path = Path("site/index.html")
@@ -135,12 +174,20 @@ def main():
     if content is None:
         return
 
+    # Replace error models table
+    content = replace_table_content(
+        content, '<tbody id="errorModelsBody">', "</tbody>", error_models_body
+    )
+    if content is None:
+        return
+
     # Write the updated index.html
     with open(index_path, "w") as f:
         f.write(content)
 
     print(f"✓ Updated {index_path} with {len(results)} leaderboard rows")
     print(f"✓ Updated {index_path} with {len(failed_words)} failed words")
+    print(f"✓ Updated {index_path} with {len(error_models)} error models")
 
 
 if __name__ == "__main__":
