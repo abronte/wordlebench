@@ -36,4 +36,29 @@ with open("results.json", "w") as f:
 
 print(f"Wrote {len(data)} records to site/results.json")
 
+# Query for hardest words (most unsolved)
+query2 = """
+SELECT
+    word,
+    COUNT(CASE WHEN solved = 0 THEN 1 END) as failure_count
+FROM games
+GROUP BY word
+ORDER BY failure_count DESC
+LIMIT 10
+"""
+
+cursor.execute(query2)
+result2 = cursor.fetchall()
+
+# Convert to list of dictionaries
+hardest_words = []
+for row in result2:
+    hardest_words.append({"word": row[0]})
+
+# Write to JSON file
+with open("failed_words.json", "w") as f:
+    json.dump(hardest_words, f, indent=2)
+
+print(f"Wrote {len(hardest_words)} records to failed_words.json")
+
 conn.close()
