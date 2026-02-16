@@ -155,6 +155,7 @@ if __name__ == "__main__":
         "qwen/qwen3-max-thinking",
         "qwen/qwen3-next-80b-a3b-thinking",
         "qwen/qwen3.5-397b-a17b",
+        "minimax/minimax-m2.5",
     ]
 
     # Create all (word, model) pairs to process, filtering out existing games
