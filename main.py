@@ -3,6 +3,7 @@ import json
 import re
 import random
 import os
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from dotenv import load_dotenv
@@ -58,10 +59,22 @@ def get_words() -> list[str]:
 
 
 def make_guess(messages: list[dict], model: str):
-    resp = client.chat.completions.create(
-        model=model,
-        messages=messages,
-    )
+    while True:
+        try:
+            resp = client.chat.completions.create(
+                model=model,
+                messages=messages,
+            )
+            break
+        except Exception as e:
+            if "rate-limited" in str(e):
+                print(e)
+                print(
+                    f"Rate limited when calling model {model}. Retrying in 10 seconds..."
+                )
+                time.sleep(10)
+            else:
+                raise e
 
     return resp
 
@@ -141,6 +154,7 @@ if __name__ == "__main__":
         "mistralai/mistral-large-2512",
         "qwen/qwen3-max-thinking",
         "qwen/qwen3-next-80b-a3b-thinking",
+        "qwen/qwen3.5-397b-a17b",
     ]
 
     # Create all (word, model) pairs to process, filtering out existing games
