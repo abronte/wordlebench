@@ -141,6 +141,7 @@ if __name__ == "__main__":
         "openai/gpt-oss-120b",
         "openai/gpt-oss-20b",
         "anthropic/claude-opus-4.6",
+        "anthropic/claude-opus-4.5",
         "anthropic/claude-sonnet-4.5",
         "anthropic/claude-sonnet-4.6",
         "anthropic/claude-haiku-4.5",
