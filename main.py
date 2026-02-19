@@ -146,6 +146,7 @@ if __name__ == "__main__":
         "anthropic/claude-sonnet-4.6",
         "anthropic/claude-haiku-4.5",
         "moonshotai/kimi-k2.5",
+        "google/gemini-3.1-pro-preview",
         "google/gemini-3-flash-preview",
         "google/gemini-3-pro-preview",
         "google/gemini-2.5-pro",
