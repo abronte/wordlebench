@@ -1,16 +1,14 @@
-import csv
-import json
-import re
-import random
 import os
+import random
+import re
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from dotenv import load_dotenv
 from openai import OpenAI
 
+from db import add_game, check_game, init_db
 from models import Game
-from db import check_game, add_game, init_db
 
 # Load environment variables from .env file
 load_dotenv()
@@ -159,6 +157,7 @@ if __name__ == "__main__":
         "qwen/qwen3-next-80b-a3b-thinking",
         "qwen/qwen3.5-397b-a17b",
         "minimax/minimax-m2.5",
+        "nvidia/nemotron-3-nano-30b-a3b",
     ]
 
     # Create all (word, model) pairs to process, filtering out existing games
