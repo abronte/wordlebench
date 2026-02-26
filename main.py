@@ -56,12 +56,16 @@ def get_words() -> list[str]:
         return words
 
 
-def make_guess(messages: list[dict], model: str):
+def make_guess(messages: list[dict], model: str, word: str):
     while True:
         try:
             resp = client.chat.completions.create(
                 model=model,
                 messages=messages,
+                extra_body={
+                    "reasoning": {"effort": "high"},
+                    "trace": {"benchmark": True, "word": word},
+                },
             )
             break
         except Exception as e:
@@ -87,7 +91,7 @@ def play_wordle(word: str, model: str) -> Game:
     ]
 
     while game.guesses <= 5:
-        guess_completion = make_guess(messages, model)
+        guess_completion = make_guess(messages, model, word)
         guess_content = guess_completion.choices[0].message.content
         game.cost += guess_completion.usage.cost
         messages.append({"role": "assistant", "content": guess_content})
@@ -133,6 +137,7 @@ if __name__ == "__main__":
     words = get_words()
     models = [
         "openai/gpt-5.2",
+        "openai/gpt-5.1",
         "openai/gpt-5",
         "openai/gpt-5-mini",
         "openai/gpt-5-nano",
@@ -156,6 +161,9 @@ if __name__ == "__main__":
         "qwen/qwen3-max-thinking",
         "qwen/qwen3-next-80b-a3b-thinking",
         "qwen/qwen3.5-397b-a17b",
+        "qwen/qwen3.5-122b-a10b",
+        "qwen/qwen3.5-35b-a3b",
+        "qwen/qwen3.5-27b",
         "minimax/minimax-m2.5",
         "nvidia/nemotron-3-nano-30b-a3b",
     ]
