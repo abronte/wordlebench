@@ -166,6 +166,7 @@ if __name__ == "__main__":
         "qwen/qwen3.5-27b",
         "minimax/minimax-m2.5",
         "nvidia/nemotron-3-nano-30b-a3b",
+        "google/gemini-3.1-flash-lite-preview",
     ]
 
     # Create all (word, model) pairs to process, filtering out existing games
