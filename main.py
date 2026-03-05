@@ -2,6 +2,7 @@ import os
 import random
 import re
 import time
+import traceback
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from dotenv import load_dotenv
@@ -136,6 +137,7 @@ if __name__ == "__main__":
 
     words = get_words()
     models = [
+        "openai/gpt-5.4",
         "openai/gpt-5.2",
         "openai/gpt-5.1",
         "openai/gpt-5",
@@ -197,3 +199,4 @@ if __name__ == "__main__":
                 print(
                     f"Task for word '{word}' with model '{model}' generated an exception: {exc}"
                 )
+                traceback.print_exc()
