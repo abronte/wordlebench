@@ -169,6 +169,8 @@ if __name__ == "__main__":
         "minimax/minimax-m2.5",
         "nvidia/nemotron-3-nano-30b-a3b",
         "google/gemini-3.1-flash-lite-preview",
+        "x-ai/grok-4.1-fast",
+        "x-ai/grok-4.20-beta",
     ]
 
     # Create all (word, model) pairs to process, filtering out existing games
