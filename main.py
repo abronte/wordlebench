@@ -157,6 +157,7 @@ if __name__ == "__main__":
         "google/gemini-2.5-pro",
         "google/gemini-2.5-flash",
         "z-ai/glm-5",
+        "z-ai/glm-5-turbo",
         "z-ai/glm-4.7-flash",
         "z-ai/glm-4.7",
         "mistralai/mistral-large-2512",
