@@ -138,6 +138,8 @@ if __name__ == "__main__":
     words = get_words()
     models = [
         "openai/gpt-5.4",
+        "openai/gpt-5.4-mini",
+        "openai/gpt-5.4-nano",
         "openai/gpt-5.2",
         "openai/gpt-5.1",
         "openai/gpt-5",
@@ -161,6 +163,7 @@ if __name__ == "__main__":
         "z-ai/glm-4.7-flash",
         "z-ai/glm-4.7",
         "mistralai/mistral-large-2512",
+        "mistralai/mistral-small-2603",
         "qwen/qwen3-max-thinking",
         "qwen/qwen3-next-80b-a3b-thinking",
         "qwen/qwen3.5-397b-a17b",
