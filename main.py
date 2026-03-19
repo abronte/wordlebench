@@ -178,6 +178,8 @@ if __name__ == "__main__":
         "nvidia/nemotron-3-nano-30b-a3b",
         "x-ai/grok-4.1-fast",
         "x-ai/grok-4.20-beta",
+        "xiaomi/mimo-v2-pro",
+        "xiaomi/mimo-v2-flash",
     ]
 
     # Create all (word, model) pairs to process, filtering out existing games
