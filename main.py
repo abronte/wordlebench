@@ -65,7 +65,7 @@ def make_guess(messages: list[dict], model: str, word: str):
                 messages=messages,
                 extra_body={
                     "reasoning": {"effort": "high"},
-                    "trace": {"benchmark": True, "word": word},
+                    "trace": {"benchmark": True, "word": word, "run": "2026-03-18"},
                 },
             )
             break
@@ -85,13 +85,15 @@ def make_guess(messages: list[dict], model: str, word: str):
 def play_wordle(word: str, model: str) -> Game:
     print(f"({model} {word}) Starting Wordle game")
 
+    max_guesses = 6
+
     game = Game(model=model, word=word)
     messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_prompt},
     ]
 
-    while game.guesses <= 5:
+    while game.guesses <= max_guesses:
         guess_completion = make_guess(messages, model, word)
         guess_content = guess_completion.choices[0].message.content
         game.cost += guess_completion.usage.cost
@@ -115,7 +117,7 @@ def play_wordle(word: str, model: str) -> Game:
             game.solved = True
             break
 
-        if game.guesses < 5:
+        if game.guesses < max_guesses:
             game.guesses += 1
             messages.append({"role": "user", "content": f"Result: {result}"})
         else:
@@ -125,7 +127,7 @@ def play_wordle(word: str, model: str) -> Game:
 
     if not game.solved:
         print(f"({model} {word}) Failed to solve the wordle")
-        game.guesses = 6
+        game.guesses = max_guesses
         game.solved = False
 
     return game
@@ -154,6 +156,7 @@ if __name__ == "__main__":
         "anthropic/claude-haiku-4.5",
         "moonshotai/kimi-k2.5",
         "google/gemini-3.1-pro-preview",
+        "google/gemini-3.1-flash-lite-preview",
         "google/gemini-3-flash-preview",
         "google/gemini-3-pro-preview",
         "google/gemini-2.5-pro",
@@ -173,7 +176,6 @@ if __name__ == "__main__":
         "minimax/minimax-m2.5",
         "minimax/minimax-m2.7",
         "nvidia/nemotron-3-nano-30b-a3b",
-        "google/gemini-3.1-flash-lite-preview",
         "x-ai/grok-4.1-fast",
         "x-ai/grok-4.20-beta",
     ]
