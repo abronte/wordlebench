@@ -98,7 +98,14 @@ def play_wordle(word: str, model: str) -> Game:
         guess_content = guess_completion.choices[0].message.content
         game.cost += guess_completion.usage.cost
         messages.append({"role": "assistant", "content": guess_content})
-        guess = extract_tag(guess_content, "guess").upper()
+
+        try:
+            guess = extract_tag(guess_content, "guess").upper()
+        except Exception as e:
+            print(f"Error extracting guess for model {model} and word {word}: {e}")
+            print(guess_content)
+            print(guess_completion)
+            guess = ""
 
         if guess == "":
             print(f"({model} {word}) LLM failed to provide a guess. Ending game.")
@@ -161,6 +168,8 @@ if __name__ == "__main__":
         "google/gemini-3-pro-preview",
         "google/gemini-2.5-pro",
         "google/gemini-2.5-flash",
+        "google/gemma-4-26b-a4b-it",
+        "google/gemma-4-31b-it",
         "z-ai/glm-5",
         "z-ai/glm-5-turbo",
         "z-ai/glm-4.7-flash",
