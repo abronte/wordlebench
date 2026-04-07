@@ -170,6 +170,7 @@ if __name__ == "__main__":
         "google/gemini-2.5-flash",
         "google/gemma-4-26b-a4b-it",
         "google/gemma-4-31b-it",
+        "z-ai/glm-5.1",
         "z-ai/glm-5",
         "z-ai/glm-5-turbo",
         "z-ai/glm-4.7-flash",
@@ -189,6 +190,7 @@ if __name__ == "__main__":
         "x-ai/grok-4.20-beta",
         "xiaomi/mimo-v2-pro",
         "xiaomi/mimo-v2-flash",
+        "arcee-ai/trinity-large-thinking",
     ]
 
     # Create all (word, model) pairs to process, filtering out existing games
