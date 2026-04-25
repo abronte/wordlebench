@@ -146,6 +146,7 @@ if __name__ == "__main__":
 
     words = get_words()
     models = [
+        "openai/gpt-5.5",
         "openai/gpt-5.4",
         "openai/gpt-5.4-mini",
         "openai/gpt-5.4-nano",
