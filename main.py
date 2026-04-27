@@ -186,6 +186,7 @@ if __name__ == "__main__":
         "qwen/qwen3.5-122b-a10b",
         "qwen/qwen3.5-35b-a3b",
         "qwen/qwen3.5-27b",
+        "qwen/qwen3.6-27b",
         "minimax/minimax-m2.5",
         "minimax/minimax-m2.7",
         "nvidia/nemotron-3-nano-30b-a3b",
