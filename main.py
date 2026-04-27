@@ -196,6 +196,8 @@ if __name__ == "__main__":
         "xiaomi/mimo-v2-pro",
         "xiaomi/mimo-v2-flash",
         "arcee-ai/trinity-large-thinking",
+        "deepseek/deepseek-v4-pro",
+        "deepseek/deepseek-v4-flash",
     ]
 
     # Create all (word, model) pairs to process, filtering out existing games
