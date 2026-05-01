@@ -193,6 +193,7 @@ if __name__ == "__main__":
         "minimax/minimax-m2.5",
         "minimax/minimax-m2.7",
         "nvidia/nemotron-3-nano-30b-a3b",
+        "x-ai/grok-4.3",
         "x-ai/grok-4.1-fast",
         "x-ai/grok-4.20-beta",
         "xiaomi/mimo-v2.5",
