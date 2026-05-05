@@ -180,6 +180,7 @@ if __name__ == "__main__":
         "z-ai/glm-4.7",
         "mistralai/mistral-large-2512",
         "mistralai/mistral-small-2603",
+        "mistralai/mistral-medium-3-5",
         "qwen/qwen3-max-thinking",
         "qwen/qwen3-next-80b-a3b-thinking",
         "qwen/qwen3.5-397b-a17b",
