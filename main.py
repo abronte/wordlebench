@@ -192,6 +192,7 @@ if __name__ == "__main__":
         "qwen/qwen3.6-plus",
         "qwen/qwen3.6-35b-a3b",
         "qwen/qwen3.6-flash",
+        "qwen/qwen3.7-max",
         "minimax/minimax-m2.5",
         "minimax/minimax-m2.7",
         "nvidia/nemotron-3-nano-30b-a3b",
