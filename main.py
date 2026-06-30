@@ -164,6 +164,7 @@ if __name__ == "__main__":
         "anthropic/claude-opus-4.5",
         "anthropic/claude-sonnet-4.5",
         "anthropic/claude-sonnet-4.6",
+        "anthropic/claude-sonnet-5",
         "anthropic/claude-haiku-4.5",
         "moonshotai/kimi-k2.5",
         "moonshotai/kimi-k2.6",
