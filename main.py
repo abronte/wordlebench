@@ -147,8 +147,11 @@ if __name__ == "__main__":
     words = get_words()
     models = [
         "openai/gpt-5.6-sol",
+        "openai/gpt-5.6-sol-pro",
         "openai/gpt-5.6-terra",
+        "openai/gpt-5.6-terra-pro",
         "openai/gpt-5.6-luna",
+        "openai/gpt-5.6-luna-pro",
         "openai/gpt-5.5",
         "openai/gpt-5.4",
         "openai/gpt-5.4-mini",
