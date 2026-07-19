@@ -222,6 +222,7 @@ if __name__ == "__main__":
         "deepseek/deepseek-v4-pro",
         "deepseek/deepseek-v4-flash",
         "meta/muse-spark-1.1",
+        "thinkingmachines/inkling",
     ]
 
     # Create all (word, model) pairs to process, filtering out existing games
