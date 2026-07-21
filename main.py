@@ -175,6 +175,8 @@ if __name__ == "__main__":
         "moonshotai/kimi-k2.5",
         "moonshotai/kimi-k2.6",
         "moonshotai/kimi-k3",
+        "google/gemini-3.6-flash",
+        "google/gemini-3.5-flash-lite",
         "google/gemini-3.5-flash",
         "google/gemini-3.1-pro-preview",
         "google/gemini-3.1-flash-lite-preview",
