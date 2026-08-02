@@ -225,6 +225,7 @@ if __name__ == "__main__":
         "arcee-ai/trinity-large-thinking",
         "deepseek/deepseek-v4-pro",
         "deepseek/deepseek-v4-flash",
+        "deepseek/deepseek-v4-flash-0731",
         "meta/muse-spark-1.1",
         "thinkingmachines/inkling",
         "thinkingmachines/inkling-small",
