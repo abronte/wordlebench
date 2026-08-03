@@ -209,6 +209,7 @@ if __name__ == "__main__":
         "qwen/qwen3.7-max",
         "qwen/qwen3.7-plus",
         "qwen/qwen3.7-flash",
+        "qwen/qwen3.8-max",
         "minimax/minimax-m2.5",
         "minimax/minimax-m2.7",
         "minimax/minimax-m3",
