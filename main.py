@@ -228,6 +228,7 @@ if __name__ == "__main__":
         "deepseek/deepseek-v4-flash",
         "deepseek/deepseek-v4-flash-0731",
         "meta/muse-spark-1.1",
+        "meta/muse-spark-1.2",
         "thinkingmachines/inkling",
         "thinkingmachines/inkling-small",
     ]
